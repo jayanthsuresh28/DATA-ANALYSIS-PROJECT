@@ -1,0 +1,93 @@
+import pandas as pd
+
+# ===== Step 1: Load CSV =====
+def load_csv():
+    try:
+        path = input("Enter CSV file path: ")
+        df = pd.read_csv(path)
+        print("\nFile loaded successfully!\n")
+        return df
+    except Exception as e:
+        print("Error loading file:", e)
+        return None
+
+# ===== Step 2: Clean Data =====
+def clean_data(df):
+    print("\n--- Cleaning Data ---")
+
+    # Remove duplicate rows
+    df = df.drop_duplicates()
+
+    # Fill missing numeric values with 0
+    df = df.fillna(0)
+
+    print("Data cleaned")
+    return df
+
+# ===== Step 3: Show Summary Statistics =====
+def show_summary(df):
+    print("\n--- Summary Statistics ---")
+    print(df.describe())
+
+# ===== Step 4: Filtering =====
+def filter_data(df):
+    print("\n--- Filter Data ---")
+    column = input("Enter column name to filter: ")
+    value = input("Enter value to filter by: ")
+
+    if column in df.columns:
+        filtered = df[df[column] == value]
+        print("\nFiltered Data:\n")
+        print(filtered)
+    else:
+        print("Column not found")
+
+# ===== Step 5: Grouping =====
+def group_data(df):
+    print("\n--- Group Data ---")
+    column = input("Enter column name to group by: ")
+
+    if column in df.columns:
+        grouped = df.groupby(column).size()
+        print("\nGrouped Data:\n")
+        print(grouped)
+    else:
+        print("Column not found")
+
+# ===== Main Menu =====
+def main():
+    df = load_csv()
+    if df is None:
+        return
+
+    while True:
+        print("\n====== DATA ANALYSIS MENU ======")
+        print("1. Clean Data")
+        print("2. Show Summary")
+        print("3. Filter Data")
+        print("4. Group Data")
+        print("5. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            df = clean_data(df)
+
+        elif choice == "2":
+            show_summary(df)
+
+        elif choice == "3":
+            filter_data(df)
+
+        elif choice == "4":
+            group_data(df)
+
+        elif choice == "5":
+            print("Exiting...")
+            break
+
+        else:
+            print("Invalid choice")
+
+
+main()
